@@ -79,32 +79,34 @@ export class PhysicCharacterService {
         .scale(onGroundSpeed)
         .applyRotationQuaternion(characterOrientation);
 
+      const { averageSurfaceVelocity, averageSurfaceNormal } = supportInfo;
+      
       let outputVelocity = physicsCharacterController.calculateMovement(
         deltaTime,
         forwardWorld,
-        supportInfo.averageSurfaceNormal,
+        averageSurfaceNormal,
         currentVelocity,
-        supportInfo.averageSurfaceVelocity,
+        averageSurfaceVelocity,
         desiredVelocity,
         upWorld
       );
       // Horizontal projection
-      outputVelocity.subtractInPlace(supportInfo.averageSurfaceVelocity);
       const inv1k = 1e-3;
       if (outputVelocity.dot(upWorld) > inv1k) {
+        outputVelocity.subtractInPlace(averageSurfaceVelocity);
         const velLen = outputVelocity.length();
         outputVelocity.normalizeFromLength(velLen);
 
         // Get the desired length in the horizontal direction
-        const horizLen = velLen / supportInfo.averageSurfaceNormal.dot(upWorld);
+        const horizLen = velLen / averageSurfaceNormal.dot(upWorld);
 
         // Re project the velocity onto the horizontal plane
-        const c = supportInfo.averageSurfaceNormal.cross(outputVelocity);
+        const c = averageSurfaceNormal.cross(outputVelocity);
         outputVelocity = c.cross(upWorld);
         outputVelocity.scaleInPlace(horizLen);
+        outputVelocity.addInPlace(averageSurfaceVelocity);
       }
 
-      outputVelocity.addInPlace(supportInfo.averageSurfaceVelocity);
       return outputVelocity;
     } else if (state === 'START_JUMP') {
       const u = Math.sqrt(2 * characterGravity.length() * jumpHeight);

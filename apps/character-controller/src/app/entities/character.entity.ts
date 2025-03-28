@@ -135,7 +135,8 @@ export class CharacterEntity {
       { capsuleRadius: x, capsuleHeight: y * 2 },
       scene
     );
-
+    physicsCharacterController.maxSlopeCosine =0.64278760968;
+ 
     return new PhysicsCharacterComponent({
       physicsCharacterController: physicsCharacterController,
       state: 'IN_AIR',

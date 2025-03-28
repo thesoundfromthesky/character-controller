@@ -2,4 +2,4 @@
 
 export NODE_ENV=production
 
-npm run nx build character-controller -- --mode=development
+npm run nx build character-controller -- --mode=production
