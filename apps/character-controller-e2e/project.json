@@ -1,0 +1,10 @@
+{
+  "name": "character-controller-e2e",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/character-controller-e2e/src",
+  "projectType": "application",
+  "tags": [],
+  "implicitDependencies": ["character-controller"],
+  "// targets": "to see all targets run: nx show project character-controller-e2e --web",
+  "targets": {}
+}
